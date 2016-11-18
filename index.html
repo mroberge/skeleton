@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practice Skeleton Plots</title>
+    <!-- A quick stab at creating a skeleton plot app similar to Paul Sheppards work. -->
+    <!-- http://www.ltrr.arizona.edu/skeletonplot/SkeletonPlot19.htm -->
+
+    <!-- Draggable div based on jQuery example: https://jqueryui.com/draggable/#constrain-movement -->
+    <!-- Grid from Thomas W: http://stackoverflow.com/a/14209704 -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .draggable { width: 801px; height: 81px; padding: 0em; float: left; margin: 0 0 0 0px; }
+        #master { cursor: e-resize; }
+        #skeleton { margin-left: 20px}
+        h3 { clear: left; }
+        .overlay {
+            position: absolute;
+            background: rgba(100,100,100,0);
+            top:0px;
+            bottom:0px;
+            left:0px;
+            right:0px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#master" ).draggable({
+                axis: "x",
+                scroll: false,
+                drag: function( event, ui ) {
+
+                    // Keep the left edge of the element
+                    // at least 100 pixels from the container
+                    updateYear(ui.position.left);
+                }
+            });
+
+            function updateYear(leftPos){
+                year = Math.round(1680 - (leftPos / 8))
+                $("span.year").text(year)
+            }
+
+        } );
+
+    </script>
+</head>
+<body>
+
+<h3>Constrain movement along an axis:</h3>
+<p><span class="year">1680</span></p>
+<div id="skeleton">
+    <img src="grid.svg" width="241" height="81"/>
+    <div class="overlay">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <line x1=25 y1=12 x2=55 y2=10>
+        </svg>
+    </div>
+</div>
+<div id="master" class="draggable ui-widget-content">
+    <img src="grid.svg" width="801" height="81"/>
+</div>
+
+
+
+</body>
+</html>
