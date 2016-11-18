@@ -15,13 +15,12 @@
         #master { cursor: e-resize; }
         #skeleton { margin-left: 20px}
         h3 { clear: left; }
-        .overlay {
+        .label {
+            margin: 0 0 0 5px;
+        }
+        #arrowsvg {
             position: absolute;
-            background: rgba(100,100,100,0);
-            top:0px;
-            bottom:0px;
-            left:0px;
-            right:0px;
+            top: 0px;
         }
     </style>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -50,20 +49,24 @@
 </head>
 <body>
 
-<h3>Constrain movement along an axis:</h3>
-<p><span class="year">1680</span></p>
+<h3>Skeleton Plot Practice</h3>
+<p class="label"><span class="year">1680</span></p>
 <div id="skeleton">
     <img src="grid.svg" width="241" height="81"/>
-    <div class="overlay">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <line x1=25 y1=12 x2=55 y2=10>
-        </svg>
-    </div>
 </div>
 <div id="master" class="draggable ui-widget-content">
     <img src="grid.svg" width="801" height="81"/>
 </div>
-
+<div id="arrowsvg">
+    <svg width="100" height="200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+            </marker>
+        </defs>
+        <line x1=20 y1=75 x2=20 y2=161 stroke="#000" stroke-width="1" marker-end="url(#arrow)">
+    </svg>
+</div>
 
 
 </body>
