@@ -44,30 +44,64 @@
                 $("span.year").text(year)
             }
 
-        } );
 
+            $( "#master2" ).draggable({
+                axis: "x",
+                scroll: false,
+                drag: function( event, ui ) {
+
+                    // Keep the left edge of the element
+                    // at least 100 pixels from the container
+                    updateYear2(ui.position.left);
+                }
+            });
+
+            function updateYear2(leftPos){
+                year2 = Math.round(1680 - (leftPos / 8))
+                $("span.year2").text(year2)
+            }
+
+        } );
     </script>
 </head>
 <body>
 
 <h3>Skeleton Plot Practice</h3>
-<p class="label"><span class="year">1680</span></p>
+<p class="label"><span class="year">160</span></p>
+<p class="label"><span class="year2">160</span></p>
+<svg width="1000" height="300" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
+            <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5"/>
+        </pattern>
+        <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+            <rect width="80" height="80" fill="url(#smallGrid)"/>
+            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
+        </pattern>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+        </marker>
+    </defs>
+    <g id="skeleton">
+        <line x1=10 y1=15 x2=10 y2=81 stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+        <rect x="10" y="15" width="241" height="81" fill="url(#grid)" />
+    </g>
+    <g id="master" class="draggable ui-widget-content">
+        <line x1=10 y1=15 x2=10 y2=81 stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
+        <rect stroke="#000" stroke-width="1" width="801" height="81" fill="url(#grid)" />
+    </g>
+
+</svg>
+
+
+
 <div id="skeleton">
     <img src="grid.svg" width="241" height="81"/>
 </div>
-<div id="master" class="draggable ui-widget-content">
+<div id="master2" class="draggable ui-widget-content">
     <img src="grid.svg" width="801" height="81"/>
 </div>
-<div id="arrowsvg">
-    <svg width="100" height="200" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
-                <path d="M0,0 L0,6 L9,3 z" fill="#000" />
-            </marker>
-        </defs>
-        <line x1=20 y1=75 x2=20 y2=161 stroke="#000" stroke-width="1" marker-end="url(#arrow)">
-    </svg>
-</div>
+
 
 
 </body>
