@@ -11,23 +11,78 @@
     <!-- Grid from Thomas W: http://stackoverflow.com/a/14209704 -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
-        .draggable { width: 801px; height: 81px; padding: 0em; float: left; margin: 0 0 0 0px; }
+        .draggable { width: 801px; height: 81px; padding: 0; float: left; margin: 0 0 0 0; }
         #master { cursor: e-resize; }
         #skeleton { margin-left: 20px}
+        #masterline {stroke-width: 3; stroke: blue}
         h3 { clear: left; }
         .label {
-            margin: 0 0 0 5px;
+            margin: 0 0 0 25px;
         }
-        #arrowsvg {
-            position: absolute;
-            top: 0px;
-        }
+
     </style>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="jquery.ui.touch-punch.min.js"></script>
     <script>
         $( function() {
+
+            var data=[
+                0, 0, 0, 4, 0, 0, 6, 4, 0, 0, 0, 8, 0, 0, 0, 8, 6, 0, 0, 9,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 4, 0, 0, 0, 0, 0, 4,
+                7, 5, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 7, 0, 0, 5, 6, 9, 4, 0,
+                0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 5, 5, 0, 0, 0, 6, 4, 0, 0, 0, 0, 7, 4, 0, 0, 0, 0, 0
+            ],
+            skeleton = data.slice(23, 73),
+            start = 1680,
+            arrowstart = start + 5,
+            lines = [];
+            function setTop(start, val) {
+                return start + val;
+            }
+            function setX(index) {
+                return index * 8 + 1;
+            }
+            function placeLines(linearray, context) {
+                linearray.forEach(function(element, index){
+                    var setX = index * 8 + 1;
+                    var setY = 80 - (element * 8)
+                    $(document.createElementNS('http://www.w3.org/2000/svg','line'))
+                            .attr({
+                                "class": "masterline",
+                                x1: setX,
+                                x2: setX,
+                                y1: setY,
+                                y2: 80,
+                                stroke: "black",
+                                "stroke-width": 3
+                            })
+                            .appendTo(context);
+                });
+            }
+
+            placeLines(data, "#masterLines");
+            placeLines(skeleton, "#skeletonLines");
+
+            $("span.year").text(arrowstart)
+
+            //masterlines = $("#masterlines")
+            var tall = 15;
+
+            $(document.createElementNS('http://www.w3.org/2000/svg','line'))
+                      .attr({
+                          "class": "masterline",
+                          x1: 25,
+                          x2: 25,
+                          y1: 0,
+                          y2: 80,
+                          stroke: "black",
+                          "stroke-width": 3
+                      })
+                      .attr("y1", setTop(0, tall))
+                      .appendTo("#masterlines");
+
             $( "#master" ).draggable({
                 axis: "x",
                 scroll: false,
@@ -42,74 +97,42 @@
             });
 
             function updateYear(leftPos){
-                year = Math.round(1680 - (leftPos / 8))
+                year = Math.round(arrowstart - (leftPos / 8))
                 $("span.year").text(year)
             }
-
-
-            $( "#master2" ).draggable({
-                axis: "x",
-                scroll: false,
-                drag: function( event, ui ) {
-
-                    // Keep the left edge of the element
-                    // at least 100 pixels from the container
-                    updateYear2(ui.position.left);
-                }
-            });
-
-            function updateYear2(leftPos){
-                year2 = Math.round(1680 - (leftPos / 8))
-                $("span.year2").text(year2)
-            }
-
         } );
     </script>
 </head>
 <body>
 
 <h3>Skeleton Plot Practice</h3>
-<p class="label"><span class="year">160</span></p>
-<p class="label"><span class="year2">160</span></p>
-<svg width="1000" height="300" xmlns="http://www.w3.org/2000/svg">
+<p class="label"><span class="year"> </span></p>
+<svg width="100%" height="90" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-            <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5"/>
+            <path d="M 8 0 L 0 0 0 8" fill="none" stroke="green" stroke-width="0.5"/>
         </pattern>
         <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
             <rect width="80" height="80" fill="url(#smallGrid)"/>
             <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1"/>
         </pattern>
         <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth">
-            <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+            <path d="M0,0 L0,6 L9,3 z" fill="red" />
         </marker>
     </defs>
-    <g id="skeleton">
-        <line x1=10 y1=15 x2=10 y2=81 stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
-        <rect x="10" y="15" width="241" height="81" fill="url(#grid)" />
+    <g transform="translate(40)">
+        <line x1=0 y1=0 x2=0 y2=81 stroke="red" stroke-width="1" marker-end="url(#arrow)"/>
+        <g id="skeletonLines" >
+        </g>
+        <rect x="0" y="0" width="401" height="81" fill="url(#grid)" />
     </g>
-    <g id="master" class="draggable ui-widget-content" transform="translate(220) rotate(45 50 50)">
-        <line class="masterline" x1=1 y1=10 x2=1 y2=80 stroke="#000" stroke-width="3"/>
-        <line class="masterline" x1=9 y1=40 x2=9 y2=80 stroke="#000" stroke-width="3"/>
-        <rect y="0" width="100%" height="81" fill="url(#grid)" />
-    </g>
-    <g id="masterx" class="draggable ui-widget-content" >
-        <line x1=10 y1=15 x2=10 y2=81 stroke="#000" stroke-width="1" marker-end="url(#arrow)"/>
-        <rect stroke="#000" stroke-width="1" width="801" height="81" fill="url(#grid)" />
-    </g>
-
 </svg>
 
-
-
-<div id="skeleton">
-    <img src="grid.svg" width="241" height="81"/>
-</div>
-<div id="master2" class="draggable ui-widget-content">
-    <svg width="1000" height="300" xmlns="http://www.w3.org/2000/svg">
+<div id="master" class="draggable ui-widget-content">
+    <svg width="100%" height="300" xmlns="http://www.w3.org/2000/svg">
         <defs>
             <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5"/>
+                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="green" stroke-width="0.5"/>
             </pattern>
             <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
                 <rect width="80" height="80" fill="url(#smallGrid)"/>
@@ -119,8 +142,8 @@
                 <path d="M0,0 L0,6 L9,3 z" fill="#000" />
             </marker>
         </defs>
-        <line class="masterline" x1=1 y1=10 x2=1 y2=80 stroke="#000" stroke-width="3"/>
-        <line class="masterline" x1=9 y1=40 x2=9 y2=80 stroke="#000" stroke-width="3"/>
+        <g id="masterLines">
+        </g>
         <rect y="0" width="100%" height="81" fill="url(#grid)" />
     </svg>
 </div>
