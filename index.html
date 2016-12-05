@@ -34,7 +34,10 @@
                 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 9, 8, 0, 0, 5, 6, 0, 0, 0,
                 0, 0, 5, 5, 0, 0, 0, 6, 4, 0, 0, 0, 5, 7, 4, 0, 0, 8, 0, 0
             ],
-            skeleton = data.slice(23, 73),
+            skeletonLength = 30,
+            skeletonStart = 45;
+
+            var skeleton = data.slice(skeletonStart, skeletonStart + skeletonLength),
             start = 1680,
             arrowstart = start + 5,
             lines = [];
@@ -61,7 +64,7 @@
                             .appendTo(context);
                 });
             }
-
+            $('rect[id="skeleton"]').attr("width", setX(skeletonLength))
             placeLines(data, "#masterLines");
             placeLines(skeleton, "#skeletonLines");
 
@@ -124,7 +127,7 @@
         <line x1=0 y1=0 x2=0 y2=81 stroke="red" stroke-width="1" marker-end="url(#arrow)"/>
         <g id="skeletonLines" >
         </g>
-        <rect x="0" y="0" width="401" height="81" fill="url(#grid)" />
+        <rect id="skeleton" x="0" y="0" width="401" height="81" fill="url(#grid)" />
     </g>
 </svg>
 
